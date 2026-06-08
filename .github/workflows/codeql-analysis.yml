@@ -12,10 +12,8 @@
 name: "CodeQL"
 
 on:
-  push:
-    branches: [ release/0.4, develop, release/* ]
+  workflow_dispatch:
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ release/0.4 ]
   schedule:
     - cron: '24 3 * * 3'
