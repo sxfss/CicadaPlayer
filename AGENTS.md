@@ -7,7 +7,8 @@ source as reference SDK code, and treat this fork primarily as a player and C++
 study workspace.
 
 The local checkout usually works on `release/0.4.4`. `origin` should point to
-the user's fork, and `upstream` should point to the Alibaba repository.
+the user's GitHub fork. This fork is not expected to keep syncing from the
+Alibaba upstream repository.
 
 ## Main Editing Surface
 
@@ -56,7 +57,10 @@ data handling, clocks, buffering, A/V sync, and thread shutdown behavior.
 ## Git Guidance
 
 Keep doc-only commits separate from source changes. Push normal work to
-`origin`; use `upstream` only for reference, fetch, or comparison.
+`origin`.
+
+GitHub is the main remote. Gitee is intended to be a mirror maintained by
+`.github/workflows/mirror-to-gitee.yml`, not by local dual-push configuration.
 
 Before finalizing work, run:
 

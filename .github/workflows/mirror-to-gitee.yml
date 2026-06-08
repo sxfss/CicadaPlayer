@@ -3,7 +3,9 @@ name: Mirror CicadaPlayer to Gitee
 on:
   push:
     branches:
-      - release/0.4.4
+      - "**"
+    tags:
+      - "**"
   workflow_dispatch:
 
 permissions:
@@ -20,11 +22,12 @@ jobs:
       GITEE_SSH_PRIVATE_KEY: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
 
     steps:
-      - name: Explain missing mirror key
+      - name: Check mirror key
         if: ${{ env.GITEE_SSH_PRIVATE_KEY == '' }}
         run: |
-          echo "GITEE_SSH_PRIVATE_KEY is not configured."
+          echo "::error::GITEE_SSH_PRIVATE_KEY is not configured."
           echo "Add the repository secret, then manually run this workflow once."
+          exit 1
 
       - name: Checkout source repository
         if: ${{ env.GITEE_SSH_PRIVATE_KEY != '' }}
@@ -42,8 +45,15 @@ jobs:
           ssh-keyscan -t rsa,ecdsa,ed25519 gitee.com >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Push release branch to Gitee
+      - name: Push current ref to Gitee
         if: ${{ env.GITEE_SSH_PRIVATE_KEY != '' }}
         run: |
           git remote add gitee git@gitee.com:sxfss/CicadaPlayer.git
-          git push --force gitee HEAD:refs/heads/release/0.4.4
+          if [ "$GITHUB_REF_TYPE" = "branch" ]; then
+            git push --force gitee "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          elif [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            git push --force gitee "refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
+          else
+            echo "::error::Unsupported ref type: ${GITHUB_REF_TYPE}"
+            exit 1
+          fi
