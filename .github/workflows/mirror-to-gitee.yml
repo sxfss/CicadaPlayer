@@ -1,0 +1,49 @@
+name: Mirror CicadaPlayer to Gitee
+
+on:
+  push:
+    branches:
+      - release/0.4.4
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mirror-cicadaplayer-to-gitee
+  cancel-in-progress: true
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    env:
+      GITEE_SSH_PRIVATE_KEY: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
+
+    steps:
+      - name: Explain missing mirror key
+        if: ${{ env.GITEE_SSH_PRIVATE_KEY == '' }}
+        run: |
+          echo "GITEE_SSH_PRIVATE_KEY is not configured."
+          echo "Add the repository secret, then manually run this workflow once."
+
+      - name: Checkout source repository
+        if: ${{ env.GITEE_SSH_PRIVATE_KEY != '' }}
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Configure Gitee SSH key
+        if: ${{ env.GITEE_SSH_PRIVATE_KEY != '' }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$GITEE_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t rsa,ecdsa,ed25519 gitee.com >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Push release branch to Gitee
+        if: ${{ env.GITEE_SSH_PRIVATE_KEY != '' }}
+        run: |
+          git remote add gitee git@gitee.com:sxfss/CicadaPlayer.git
+          git push --force gitee HEAD:refs/heads/release/0.4.4
