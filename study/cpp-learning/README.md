@@ -47,10 +47,12 @@ MediaPlayer API
    - 目标：知道目录怎么分层，哪些先看，哪些暂时跳过。
 2. 读 [01-player-entry-flow.md](01-player-entry-flow.md)
    - 目标：从 `MediaPlayer::SetDataSource/Prepare/Start/SeekTo` 追到 `SuperMediaPlayer` 主循环。
-3. 读 [02-cpp-engineering-patterns.md](02-cpp-engineering-patterns.md)
-   - 目标：把接口、工厂、所有权、消息队列这些 C++ 工程写法抽出来。
-4. 读 [03-architecture-lessons.md](03-architecture-lessons.md)
-   - 目标：区分哪些设计适合借鉴，哪些只是历史风格或 C/SDK 边界写法。
+3. 读 [02-cpp-concepts-through-cicada.md](02-cpp-concepts-through-cicada.md)
+   - 目标：用 CicadaPlayer 训练资源管理、对象职责、所有权、多态、工厂和错误处理。
+4. 读 [03-engineering-patterns-and-lessons.md](03-engineering-patterns-and-lessons.md)
+   - 目标：把接口、工厂、消息队列、业务接入这些工程模式抽出来，并判断哪些值得借鉴。
+5. 读 [04-interview-and-design-transfer.md](04-interview-and-design-transfer.md)
+   - 目标：把源码设计转成面试表达和 AVPlayerLab/C++17 迁移草图。
 
 第二轮再进入专题：
 
@@ -77,3 +79,21 @@ MediaPlayer API
 3. 一个 C++ 学习点总结，例如所有权、接口边界、线程同步、错误传播。
 
 不要一上来写大而全的源码索引。CicadaPlayer 文件很多，源码索引很容易看起来完整，但对学习没有帮助。
+
+## 后续专题固定模板
+
+以后每看一个源码专题，都固定回答这些问题，避免陷进细节：
+
+```text
+这个设计解决什么问题？
+C++ 概念是什么？
+哪些地方值得借鉴？
+哪些地方不要照抄？
+C++17 可以怎么写？
+可以迁移到我的播放器哪里？
+面试怎么表达？
+```
+
+尤其要及时标出不适合照抄的历史写法：裸 owning pointer、手动 `new/delete`、
+头文件 `using namespace`、宽泛 `catch (...)`、不清晰的 `void *` 所有权和裸
+`int` 错误流。
