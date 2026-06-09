@@ -62,6 +62,27 @@ Keep doc-only commits separate from source changes. Push normal work to
 GitHub is the main remote. Gitee is intended to be a mirror maintained by
 `.github/workflows/mirror-to-gitee.yml`, not by local dual-push configuration.
 
+### Change Review Process
+
+Repository writes require a reviewed plan and explicit user approval in the
+current conversation before the write is performed.
+
+The plan should state:
+
+- the change goal
+- the files expected to change
+- the intended edits
+- the expected impact on source code, documentation, build configuration, CI,
+  and the GitHub-to-Gitee mirror workflow
+- the narrowest useful verification plan
+- the proposed commit message
+
+Read-only inspection, source browsing, code search, and analysis do not require
+a separate approval step.
+
+After an approved write is completed, report the resulting commit SHA, the
+actual files changed, and the verification status.
+
 Before finalizing work, run:
 
 ```bash
