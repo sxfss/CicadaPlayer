@@ -56,6 +56,7 @@ MediaPlayer API
 
 第二轮再进入专题：
 
+- `control message + seek`：先读 [05-player-message-control-study.md](05-player-message-control-study.md)，从 `PlayerMessageControl` 入手。
 - `data_source + cache`：从 `CacheManager.cpp` 和 `dataSourcePrototype.cpp` 入手。
 - `demuxer + HLS/DASH`：从 `demuxer_service.cpp`、`demuxerPrototype.cpp`、`play_list/`、`dash/` 入手。
 - `decoder + render + clock`：从 `decoderFactory.cpp`、`ActiveDecoder.*`、`render/`、`af_clock.*` 入手。
