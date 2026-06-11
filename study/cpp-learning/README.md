@@ -1,8 +1,8 @@
-# CicadaPlayer C++ 学习路线
+# CicadaPlayer 播放器与 C++ 学习路线
 
 这个目录是给你自己的二次学习材料，不替代仓库原有的 `doc/code_learning.zh.md` 和
 `framework/code_learning.zh.md`。原文档适合作为官方入口，这里更关注：已经学过
-ffplay 和 ijkplayer 之后，如何把 CicadaPlayer 当成 C++ 工程化项目来读。
+ffplay 和 ijkplayer 之后，如何把 CicadaPlayer 当成播放器 SDK 工程来读。
 
 ## 定位
 
@@ -52,11 +52,12 @@ MediaPlayer API
 4. 读 [03-engineering-patterns-and-lessons.md](03-engineering-patterns-and-lessons.md)
    - 目标：把接口、工厂、消息队列、业务接入这些工程模式抽出来，并判断哪些值得借鉴。
 5. 读 [04-interview-and-design-transfer.md](04-interview-and-design-transfer.md)
-   - 目标：把源码设计转成面试表达和 AVPlayerLab/C++17 迁移草图。
+   - 目标：把源码设计转成可公开的技术表达和 AVPlayerLab 迁移草图。
 
 第二轮再进入专题：
 
 - `control message + seek`：先读 [05-player-message-control-study.md](05-player-message-control-study.md)，从 `PlayerMessageControl` 入手。
+- `AVPlayer 迁移候选`：读 [06-avplayer-transfer-candidates.md](06-avplayer-transfer-candidates.md)，筛选适合迁移的小型播放器设计亮点。
 - `data_source + cache`：从 `CacheManager.cpp` 和 `dataSourcePrototype.cpp` 入手。
 - `demuxer + HLS/DASH`：从 `demuxer_service.cpp`、`demuxerPrototype.cpp`、`play_list/`、`dash/` 入手。
 - `decoder + render + clock`：从 `decoderFactory.cpp`、`ActiveDecoder.*`、`render/`、`af_clock.*` 入手。
@@ -77,7 +78,7 @@ MediaPlayer API
 
 1. 一张调用链图。
 2. 一个“核心类职责表”。
-3. 一个 C++ 学习点总结，例如所有权、接口边界、线程同步、错误传播。
+3. 一个播放器机制总结；只有涉及所有权、接口边界、线程同步、错误传播时，再补 C++ 工程注意点。
 
 不要一上来写大而全的源码索引。CicadaPlayer 文件很多，源码索引很容易看起来完整，但对学习没有帮助。
 
@@ -86,13 +87,13 @@ MediaPlayer API
 以后每看一个源码专题，都固定回答这些问题，避免陷进细节：
 
 ```text
-这个设计解决什么问题？
-C++ 概念是什么？
-哪些地方值得借鉴？
+这个设计解决什么播放器问题？
+控制面 / 数据面 / 线程模型是什么？
+哪些地方值得迁移？
 哪些地方不要照抄？
-C++17 可以怎么写？
-可以迁移到我的播放器哪里？
-面试怎么表达？
+如果涉及 C++ 工程问题，应该注意什么？
+可公开的技术表达是什么？
+是否需要另存为本地私有表达？
 ```
 
 尤其要及时标出不适合照抄的历史写法：裸 owning pointer、手动 `new/delete`、

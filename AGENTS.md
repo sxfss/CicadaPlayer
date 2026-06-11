@@ -19,6 +19,36 @@ Keep study documents self-contained and learning-friendly. Explain the control
 flow, ownership model, threading model, and source anchors in one readable
 document before adding broad source indexes.
 
+## Study Material Privacy Boundary
+
+Public study notes in this repository should focus on technical understanding:
+source reading, architecture, C++ ownership and lifetime, threading, design
+patterns, and transferable engineering ideas.
+
+Do not add new repository documents whose main purpose is interview scripting,
+resume packaging, job-search strategy, company-experience mapping, or personal
+narrative. If a note contains keywords such as `面试`, `interview`, `简历`,
+`resume`, `求职`, `job search`, `公司经历`, `个人经历`, or `话术`, ask before
+writing it into the repository and prefer storing it under:
+
+```text
+/home/sxf/docs/private/cicada-player-study/
+```
+
+Existing repository notes that already contain interview-oriented wording are
+legacy material. Do not expand them with more private content. Future public
+notes should use neutral technical names such as design transfer, learning
+notes, or transfer candidates.
+
+Unless the user explicitly asks for interview, resume, job-search, or personal
+presentation material, generate development-oriented learning documents by
+default. The primary focus is player principles and engineering design:
+playback flow, control plane, data path, buffering, seek, state handling, QoE,
+and module boundaries. C++ engineering practice is the secondary focus and
+should be added when it clarifies ownership, lifetime, threading,
+synchronization, interfaces, or error propagation. Do not force every topic
+into a C++17 syntax recommendation.
+
 ## Source Code Boundary
 
 Do not casually modify `mediaPlayer/`, `framework/`, `platform/`, `plugin/`,
