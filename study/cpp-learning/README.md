@@ -61,7 +61,7 @@ MediaPlayer API
 - `buffering + QoE`：读 [07-buffering-and-qoe-study.md](07-buffering-and-qoe-study.md)，理解缓存时长、水位、卡顿状态和旁路统计。
 - `seek control`：读 [08-seek-control-study.md](08-seek-control-study.md)，理解连续 seek、缓存内 seek、flush 和完成通知。
 - `data_source + cache`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL、数据源选择和缓存旁路。
-- `demuxer + HLS/DASH`：从 `demuxer_service.cpp`、`demuxerPrototype.cpp`、`play_list/`、`dash/` 入手。
+- `demuxer + HLS/DASH`：读 [10-demuxer-prototype-study.md](10-demuxer-prototype-study.md)，理解 demuxer 边界、probe 和普通容器/播放列表实现选择。
 - `decoder + render + clock`：从 `decoderFactory.cpp`、`ActiveDecoder.*`、`render/`、`af_clock.*` 入手。
 
 ## 暂时不建议深挖
