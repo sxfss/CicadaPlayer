@@ -62,7 +62,7 @@ MediaPlayer API
 - `seek control`：读 [08-seek-control-study.md](08-seek-control-study.md)，理解连续 seek、缓存内 seek、flush 和完成通知。
 - `data_source + cache`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL、数据源选择和缓存旁路。
 - `demuxer + HLS/DASH`：读 [10-demuxer-prototype-study.md](10-demuxer-prototype-study.md)，理解 demuxer 边界、probe 和普通容器/播放列表实现选择。
-- `decoder + render + clock`：从 `decoderFactory.cpp`、`ActiveDecoder.*`、`render/`、`af_clock.*` 入手。
+- `decoder + render + clock`：读 [11-decoder-render-boundary-study.md](11-decoder-render-boundary-study.md)，理解 decoder factory、ActiveDecoder、render callback 和 clock 边界。
 
 ## 暂时不建议深挖
 
