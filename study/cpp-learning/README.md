@@ -63,6 +63,7 @@ MediaPlayer API
 - `data_source + cache`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL、数据源选择和缓存旁路。
 - `demuxer + HLS/DASH`：读 [10-demuxer-prototype-study.md](10-demuxer-prototype-study.md)，理解 demuxer 边界、probe 和普通容器/播放列表实现选择。
 - `decoder + render + clock`：读 [11-decoder-render-boundary-study.md](11-decoder-render-boundary-study.md)，理解 decoder factory、ActiveDecoder、render callback 和 clock 边界。
+- `packet/frame queue`：读 [12-packet-frame-queue-study.md](12-packet-frame-queue-study.md)，理解 packet 缓存、frame 队列、flush 和旧数据失效。
 
 ## 暂时不建议深挖
 
