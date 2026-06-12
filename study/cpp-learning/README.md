@@ -60,7 +60,7 @@ MediaPlayer API
 - `AVPlayer 迁移候选`：读 [06-avplayer-transfer-candidates.md](06-avplayer-transfer-candidates.md)，筛选适合迁移的小型播放器设计亮点。
 - `buffering + QoE`：读 [07-buffering-and-qoe-study.md](07-buffering-and-qoe-study.md)，理解缓存时长、水位、卡顿状态和旁路统计。
 - `seek control`：读 [08-seek-control-study.md](08-seek-control-study.md)，理解连续 seek、缓存内 seek、flush 和完成通知。
-- `data_source + cache`：从 `CacheManager.cpp` 和 `dataSourcePrototype.cpp` 入手。
+- `data_source + cache`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL、数据源选择和缓存旁路。
 - `demuxer + HLS/DASH`：从 `demuxer_service.cpp`、`demuxerPrototype.cpp`、`play_list/`、`dash/` 入手。
 - `decoder + render + clock`：从 `decoderFactory.cpp`、`ActiveDecoder.*`、`render/`、`af_clock.*` 入手。
 
