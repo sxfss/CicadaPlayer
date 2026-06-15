@@ -51,19 +51,23 @@ MediaPlayer API
    - 目标：用 CicadaPlayer 训练资源管理、对象职责、所有权、多态、工厂和错误处理。
 4. 读 [03-engineering-patterns-and-lessons.md](03-engineering-patterns-and-lessons.md)
    - 目标：把接口、工厂、消息队列、业务接入这些工程模式抽出来，并判断哪些值得借鉴。
-5. 读 [04-interview-and-design-transfer.md](04-interview-and-design-transfer.md)
-   - 目标：把源码设计转成可公开的技术表达和 AVPlayerLab 迁移草图。
+5. 可选读 [04-interview-and-design-transfer.md](04-interview-and-design-transfer.md)
+   - 目标：这是早期历史材料，日常学习主线可以先跳过。
 
 第二轮再进入专题：
 
-- `control message + seek`：先读 [05-player-message-control-study.md](05-player-message-control-study.md)，从 `PlayerMessageControl` 入手。
+- `control message + seek`：先读 [05-player-message-control-study.md](05-player-message-control-study.md)，从 `PlayerMessageControl` 入手；它只解决控制面入口，不代表已经理解数据面。
 - `AVPlayer 迁移候选`：读 [06-avplayer-transfer-candidates.md](06-avplayer-transfer-candidates.md)，筛选适合迁移的小型播放器设计亮点。
 - `buffering + QoE`：读 [07-buffering-and-qoe-study.md](07-buffering-and-qoe-study.md)，理解缓存时长、水位、卡顿状态和旁路统计。
 - `seek control`：读 [08-seek-control-study.md](08-seek-control-study.md)，理解连续 seek、缓存内 seek、flush 和完成通知。
-- `data_source + cache`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL、数据源选择和缓存旁路。
-- `demuxer + HLS/DASH`：读 [10-demuxer-prototype-study.md](10-demuxer-prototype-study.md)，理解 demuxer 边界、probe 和普通容器/播放列表实现选择。
-- `decoder + render + clock`：读 [11-decoder-render-boundary-study.md](11-decoder-render-boundary-study.md)，理解 decoder factory、ActiveDecoder、render callback 和 clock 边界。
-- `packet/frame queue`：读 [12-packet-frame-queue-study.md](12-packet-frame-queue-study.md)，理解 packet 缓存、frame 队列、flush 和旧数据失效。
+
+第三轮按普通 URL/MP4 的运行轨迹读数据面。先读对象关系，再按数据流往下走：
+
+- `object model + wiring`：读 [13-object-model-and-module-wiring.md](13-object-model-and-module-wiring.md)，先画出 `MediaPlayer / SuperMediaPlayer / demuxer_service / BufferController / SMPAVDeviceManager` 的对象关系。
+- `data source read path`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL 如何变成 `IDataSource::Read/Seek`。
+- `demuxer read path`：读 [10-demuxer-prototype-study.md](10-demuxer-prototype-study.md)，理解 `demuxer_service -> avFormatDemuxer -> av_read_frame -> IAFPacket`。
+- `packet/frame queue`：读 [12-packet-frame-queue-study.md](12-packet-frame-queue-study.md)，理解 packet 缓存、pending packet、decoder queue 和 frame queue。
+- `decode + sync + render`：读 [11-decoder-render-boundary-study.md](11-decoder-render-boundary-study.md)，理解 `RenderAudio/RenderVideo`、master clock、等待/丢帧和 render callback。
 
 ## 暂时不建议深挖
 
@@ -95,7 +99,6 @@ MediaPlayer API
 哪些地方值得迁移？
 哪些地方不要照抄？
 如果涉及 C++ 工程问题，应该注意什么？
-可公开的技术表达是什么？
 是否需要另存为本地私有表达？
 ```
 
