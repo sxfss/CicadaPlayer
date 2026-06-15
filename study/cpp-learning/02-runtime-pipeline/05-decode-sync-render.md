@@ -268,7 +268,8 @@ ApsaraAudioRenderCallback::onFrameInfoUpdate()
 
 所以 `doRender()` 不是每轮必定执行。只有 buffering 状态允许，才会继续 render。
 
-这点能把 `07-buffering-and-qoe-study.md` 和本章串起来：
+这点能把 [../03-playback-features/01-buffering-and-qoe.md](../03-playback-features/01-buffering-and-qoe.md)
+和本章串起来：
 
 ```text
 packet queue 决定能不能继续播放；
@@ -328,4 +329,3 @@ rendered frame
 - audio render 不只是输出，还提供 master clock 参考。
 - video render 要根据 `mMasterClock.GetTime()` 判断等待、渲染或丢帧。
 - render callback 是结果回流，不是拉流/解码入口。
-

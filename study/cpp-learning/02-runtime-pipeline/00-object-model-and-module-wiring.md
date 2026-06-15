@@ -3,7 +3,15 @@
 如果只看 `PlayerMessageControl`，你会知道 API 命令怎么进主线程；但继续往下看拉流、解复用、解码、
 同步、渲染时，很容易迷路。原因是 CicadaPlayer 不是一条简单函数链，而是一组对象互相持有和调用。
 
-这一章先建立对象图。后面的 `09 -> 10 -> 12 -> 11` 都挂在这张图上读。
+这一章先建立对象图。后面的运行管线文档都挂在这张图上读：
+
+```text
+01-normal-mp4-playback-loop
+  -> 02-data-source-cache
+  -> 03-demuxer-prototype
+  -> 04-packet-frame-queue
+  -> 05-decode-sync-render
+```
 
 ## 先分清两张图
 
@@ -274,4 +282,3 @@ mainService loop
 - `demuxer_service` 把 `IDataSource` 和 `IDemuxer` 接起来。
 - `BufferController` 是 packet 缓存聚合层，frame queue 在 `SuperMediaPlayer` 里。
 - 控制面入口是 `PlayerMessageControl`，数据面主线是 `ProcessVideoLoop()`。
-

@@ -4,7 +4,7 @@
 
 当前主线：
 
-- [C++ 学习路线](cpp-learning/README.md)
+- [CicadaPlayer 播放器学习路线](cpp-learning/README.md)
 
 定位：
 
@@ -13,3 +13,4 @@
 - 区分“值得借鉴的工程设计”和“历史代码风格”，不把 CicadaPlayer 当成现代 C++ 风格模板直接照抄。
 
 详细阅读顺序只维护在 [cpp-learning/README.md](cpp-learning/README.md)，避免多处索引漂移。
+当前最重要的运行主线是 [普通 URL/MP4 播放循环](cpp-learning/02-runtime-pipeline/01-normal-mp4-playback-loop.md)。

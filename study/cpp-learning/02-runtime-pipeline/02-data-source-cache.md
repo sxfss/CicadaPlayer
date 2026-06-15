@@ -171,7 +171,7 @@ MediaPlayer::SetDataSource(url)
 data source 的下一层是 `demuxer_service`。它拿到 bytes 后，会创建具体 `IDemuxer`，普通 MP4
 一般会走 `avFormatDemuxer`。
 
-下一章 `10-demuxer-prototype-study.md` 继续追：
+下一章 [03-demuxer-prototype.md](03-demuxer-prototype.md) 继续追：
 
 ```text
 demuxer_service
@@ -210,4 +210,3 @@ demuxer_service
 - `demuxer_service` 通过 read/seek callback 把 demuxer 和 data source 连起来。
 - 普通 URL/MP4 第一轮只需要看 `dataSourcePrototype + IDataSource + demuxer_service callback`。
 - cache 是旁路，不要把它当成理解主链的第一入口。
-

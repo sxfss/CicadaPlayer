@@ -1,19 +1,100 @@
-# CicadaPlayer 播放器与 C++ 学习路线
+# CicadaPlayer 播放器学习路线
 
 这个目录是给你自己的二次学习材料，不替代仓库原有的 `doc/code_learning.zh.md` 和
-`framework/code_learning.zh.md`。原文档适合作为官方入口，这里更关注：已经学过
-ffplay 和 ijkplayer 之后，如何把 CicadaPlayer 当成播放器 SDK 工程来读。
+`framework/code_learning.zh.md`。原文档适合作为官方入口，这里更关注：已经学过 ffplay 和
+ijkplayer 之后，如何把 CicadaPlayer 当成播放器 SDK 工程来读。
 
-## 定位
+## 当前学习重点
 
-CicadaPlayer 不建议再按 ffplay 那种“最小播放器闭环”方式从头扫。它更适合补齐这些能力：
+现在不要再把文档当成一组平铺笔记读。主线应该是：
 
-- 多模块 C++ 工程如何分层：API 层、播放器核心、framework 基础模块、平台适配。
-- 接口和实现如何拆：`ICicadaPlayer`、`IDataSource`、`IDemuxer`、`IDecoder`、`IAudioRender`、`IVideoRender`。
-- 工厂和 prototype 如何选择实现：播放器、数据源、解封装、解码器、渲染器。
-- 生命周期如何管理：创建、prepare、start、pause、seek、stop、释放。
-- 线程和消息如何组织：外部 API 不直接做重活，而是投递到内部消息队列和主循环。
-- 业务型能力如何接入播放器主线：缓存、ABR、analytics、字幕、DRM、平台硬解。
+```text
+对象关系
+  -> 普通 URL/MP4 播放循环
+  -> data source
+  -> demuxer
+  -> packet/frame queue
+  -> decode/sync/render
+```
+
+CicadaPlayer 的价值不只是“某个模块怎么写”，而是这些模块如何被 `SuperMediaPlayer::mainService()` 串成
+一个可工作的播放器。
+
+## 目录结构
+
+### 00 Orientation
+
+入口：[00-orientation/README.md](00-orientation/README.md)
+
+解决问题：
+
+- 仓库目录怎么分层。
+- 第一轮先看哪些源码。
+- 当前本地能不能直接编译运行 cmdline。
+
+### 01 Entry / Control Plane
+
+入口：[01-entry-control-plane/README.md](01-entry-control-plane/README.md)
+
+解决问题：
+
+- `MediaPlayer` API 怎么进入 C API handle。
+- `ICicadaPlayer` 和 `SuperMediaPlayer` 的关系。
+- `PlayerMessageControl` 怎么处理 prepare/start/pause/seek/stop。
+- seek 这种控制命令如何影响后续数据面。
+
+这一组只解决控制面，不等于已经理解拉流、解复用、解码和渲染。
+
+### 02 Runtime Pipeline
+
+入口：[02-runtime-pipeline/README.md](02-runtime-pipeline/README.md)
+
+这是当前最重要的一组。推荐先读：
+
+1. [02-runtime-pipeline/00-object-model-and-module-wiring.md](02-runtime-pipeline/00-object-model-and-module-wiring.md)
+2. [02-runtime-pipeline/01-normal-mp4-playback-loop.md](02-runtime-pipeline/01-normal-mp4-playback-loop.md)
+
+然后再分层读 data source、demuxer、packet/frame queue、decode/sync/render。
+
+这组要回答的问题是：
+
+```text
+一个普通 URL/MP4 是怎么被拉流的？
+bytes 怎么变成 packet？
+packet 为什么要先进 BufferController？
+decoder 为什么有 pending packet 和内部队列？
+frame queue 和 packet queue 有什么区别？
+audio clock 为什么通常是 master？
+video frame 为什么会等待、渲染或丢弃？
+```
+
+### 03 Playback Features
+
+入口：[03-playback-features/README.md](03-playback-features/README.md)
+
+解决问题：
+
+- buffering/QoE 如何影响读取和渲染。
+- 哪些小而美的播放器机制适合迁移到 AVPlayer。
+
+这些专题必须挂回运行主线理解，不能当孤立功能读。
+
+### 04 C++ Engineering
+
+入口：[04-cpp-engineering/README.md](04-cpp-engineering/README.md)
+
+解决问题：
+
+- 用 CicadaPlayer 训练对象职责、所有权、生命周期、接口、多态、工厂。
+- 区分值得借鉴的工程设计和不建议照抄的 C++11 历史写法。
+
+C++ 是辅助视角。除非主题涉及所有权、生命周期、线程同步、接口边界和错误传播，不强行做 C++17 改写。
+
+### 99 Legacy
+
+入口：[99-legacy/README.md](99-legacy/README.md)
+
+保存早期历史材料，不作为日常学习主线。
 
 ## 和前置学习的关系
 
@@ -39,69 +120,20 @@ MediaPlayer API
   -> data_source / demuxer / codec / render / cache
 ```
 
-## 推荐顺序
+## 阅读输出
 
-第一轮只建立骨架，不要深挖所有功能。
+每看完一个阶段，只产出三件东西：
 
-1. 读 [00-source-map.md](00-source-map.md)
-   - 目标：知道目录怎么分层，哪些先看，哪些暂时跳过。
-2. 读 [01-player-entry-flow.md](01-player-entry-flow.md)
-   - 目标：从 `MediaPlayer::SetDataSource/Prepare/Start/SeekTo` 追到 `SuperMediaPlayer` 主循环。
-3. 读 [02-cpp-concepts-through-cicada.md](02-cpp-concepts-through-cicada.md)
-   - 目标：用 CicadaPlayer 训练资源管理、对象职责、所有权、多态、工厂和错误处理。
-4. 读 [03-engineering-patterns-and-lessons.md](03-engineering-patterns-and-lessons.md)
-   - 目标：把接口、工厂、消息队列、业务接入这些工程模式抽出来，并判断哪些值得借鉴。
-5. 可选读 [04-interview-and-design-transfer.md](04-interview-and-design-transfer.md)
-   - 目标：这是早期历史材料，日常学习主线可以先跳过。
+1. 一张调用链图。
+2. 一个核心类职责表。
+3. 一个播放器机制总结。
 
-第二轮再进入专题：
-
-- `control message + seek`：先读 [05-player-message-control-study.md](05-player-message-control-study.md)，从 `PlayerMessageControl` 入手；它只解决控制面入口，不代表已经理解数据面。
-- `AVPlayer 迁移候选`：读 [06-avplayer-transfer-candidates.md](06-avplayer-transfer-candidates.md)，筛选适合迁移的小型播放器设计亮点。
-- `buffering + QoE`：读 [07-buffering-and-qoe-study.md](07-buffering-and-qoe-study.md)，理解缓存时长、水位、卡顿状态和旁路统计。
-- `seek control`：读 [08-seek-control-study.md](08-seek-control-study.md)，理解连续 seek、缓存内 seek、flush 和完成通知。
-
-第三轮按普通 URL/MP4 的运行轨迹读数据面。先读对象关系，再按数据流往下走：
-
-- `object model + wiring`：读 [13-object-model-and-module-wiring.md](13-object-model-and-module-wiring.md)，先画出 `MediaPlayer / SuperMediaPlayer / demuxer_service / BufferController / SMPAVDeviceManager` 的对象关系。
-- `data source read path`：读 [09-data-source-cache-study.md](09-data-source-cache-study.md)，理解 URL 如何变成 `IDataSource::Read/Seek`。
-- `demuxer read path`：读 [10-demuxer-prototype-study.md](10-demuxer-prototype-study.md)，理解 `demuxer_service -> avFormatDemuxer -> av_read_frame -> IAFPacket`。
-- `packet/frame queue`：读 [12-packet-frame-queue-study.md](12-packet-frame-queue-study.md)，理解 packet 缓存、pending packet、decoder queue 和 frame queue。
-- `decode + sync + render`：读 [11-decoder-render-boundary-study.md](11-decoder-render-boundary-study.md)，理解 `RenderAudio/RenderVideo`、master clock、等待/丢帧和 render callback。
+只有涉及所有权、接口边界、线程同步、错误传播时，再补 C++ 工程注意点。不要一上来写大而全的源码索引。
 
 ## 暂时不建议深挖
 
-这些模块第一轮只做目录识别，不展开：
-
 - `platform/Android`、`platform/Apple`：平台 SDK 封装多，容易偏。
-- `external/`：第三方依赖，不是当前 C++ 主线。
+- `external/`：第三方依赖，不是当前主线。
 - `framework/demuxer/dash` 全量细节：协议结构复杂，后面作为 DASH 专题处理。
 - `drm/`：业务和平台依赖较重，除非你要准备 DRM 方向。
-- `analytics/`：第一轮只理解它挂在 `MediaPlayer` 外层，不深入指标体系。
-
-## 每轮阅读的输出
-
-每看完一个模块，建议只产出三件东西：
-
-1. 一张调用链图。
-2. 一个“核心类职责表”。
-3. 一个播放器机制总结；只有涉及所有权、接口边界、线程同步、错误传播时，再补 C++ 工程注意点。
-
-不要一上来写大而全的源码索引。CicadaPlayer 文件很多，源码索引很容易看起来完整，但对学习没有帮助。
-
-## 后续专题固定模板
-
-以后每看一个源码专题，都固定回答这些问题，避免陷进细节：
-
-```text
-这个设计解决什么播放器问题？
-控制面 / 数据面 / 线程模型是什么？
-哪些地方值得迁移？
-哪些地方不要照抄？
-如果涉及 C++ 工程问题，应该注意什么？
-是否需要另存为本地私有表达？
-```
-
-尤其要及时标出不适合照抄的历史写法：裸 owning pointer、手动 `new/delete`、
-头文件 `using namespace`、宽泛 `catch (...)`、不清晰的 `void *` 所有权和裸
-`int` 错误流。
+- `analytics/`：第一轮只理解它挂在外层和主循环旁路，不深入指标体系。

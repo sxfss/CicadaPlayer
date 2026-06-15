@@ -262,7 +262,7 @@ mAudioFrameQue -> RenderAudio()
 mVideoFrameQue -> RenderVideo()
 ```
 
-下一章 `11-decoder-render-boundary-study.md` 会从 frame queue 开始，继续看：
+下一章 [05-decode-sync-render.md](05-decode-sync-render.md) 会从 frame queue 开始，继续看：
 
 ```text
 audio frame 如何送 audio render
@@ -302,4 +302,3 @@ render callback 如何回到 SuperMediaPlayer
 - `mVideoPacket/mAudioPacket` 是 pending packet，用来处理 decoder retry。
 - `ActiveDecoder` 内部还有 input/output queue，是 decoder 异步边界。
 - frame queue 是 render 前的队列，职责和 packet queue 不一样。
-
